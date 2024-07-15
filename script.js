@@ -1,4 +1,4 @@
-// Query selectors for input and suggestins list
+// Query selectors for input and suggestions list
 const input = document.querySelector("#fruit");
 const suggestions = document.querySelector(".suggestions ul");
 
