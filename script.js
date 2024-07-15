@@ -86,9 +86,7 @@ const fruits = [
 
 // Function to search fruits based on input value
 function search(str) {
-  return (results = fruits.filter((fruit) =>
-    fruit.toLowerCase().includes(str)
-  ));
+  return fruits.filter((fruit) => fruit.toLowerCase().includes(str));
 }
 
 // Event handler for input keyup event
@@ -105,9 +103,6 @@ function showSuggestions(results, inputVal) {
   results.forEach((item) => {
     const li = document.createElement("li");
     li.innerHTML = highlightMatch(item, inputVal);
-    li.addEventListener("mouseover", highlightSuggestion);
-    li.addEventListener("mouseout", removeHighlight);
-    li.addEventListener("click", useSuggestion);
     suggestions.appendChild(li);
   });
 }
@@ -133,20 +128,17 @@ function clearSuggestions() {
 }
 
 // Function to use selected suggestion
-function useSuggestion(e) {
-  input.value = e.target.textContent;
+function useSuggestion({target}) {
+  let value;
+  if (target.tagName === "LI") {
+    value = target.textContent;
+  } else if (target.tagName === "STRONG") {
+    value = target.parentElement.textContent;
+  }
+  input.value = value;
   clearSuggestions();
-}
-
-// Function to highlight suggestion on mouseover
-function highlightSuggestion(e) {
-  e.target.closest("li").style.backgroundColor = "#cc8400";
-}
-
-// Function to remove highlight from suggestion on mouseout
-function removeHighlight(e) {
-  e.target.closest("li").style.backgroundColor = "";
 }
 
 // Event listener for input keyup
 input.addEventListener("keyup", searchHandler);
+suggestions.addEventListener("click", useSuggestion);
